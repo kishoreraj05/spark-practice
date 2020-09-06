@@ -20,11 +20,18 @@ object SparkStreamExp {
       .schema("city STRING, tweets INT")
       .load("D:\\learning\\spark\\streaming\\data-lander")
 
-    //val resultDf = df.groupBy("city")
-    df.writeStream.outputMode("complete")
-      .format("console")
-      .start()
+    val cityWiseCount = df.groupBy("city").count()
 
+//    val query = cityWiseCount.writeStream.outputMode("complete")
+//      .format("console")
+//      .start()
+val query = df.writeStream//.outputMode("complete")
+  .outputMode("append")
+  .format("json")
+    .option("checkpointLocation", "D:\\learning\\spark\\streaming\\checkpoint\\WordCount\\")
+  .option("path", "D:\\learning\\spark\\streaming\\output\\")
+  .start()
+    query.awaitTermination()
 
     // df.createOrReplaceTempView("dataTable")
 
