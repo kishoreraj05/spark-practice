@@ -36,6 +36,15 @@ object SparkBatch {
     // show top 20 grouped by results in console
     resultDf.show()
 
-    resultDf.write.json("./resources/outputs/countryWiseRecordsCount")
+    // write operations will write output in multiple parts file.
+    // no of files depends on the no of partitions in resultDF
+    // resultDf.write.json("./resources/outputs/countryWiseRecordsCount")
+
+    // how to write output into one files, use repartition function
+    resultDf
+      .repartition(1)
+      .write
+      .mode("overwrite")  // to overwrite the output
+      .json("./resources/outputs/countryWiseRecordsCount")
   }
 }
