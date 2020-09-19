@@ -63,8 +63,8 @@ object SparkBatchCsvReader {
 
   /**
    * Assignment to do
-   * Q1 - Select any state and write below sql query
-   * Query - Find the ratio of percentage of male and percentage of female in that state with in 25 to 45 years of age.
+   * Select any state and write below sql query
+   * Ques-1 - Find the ratio of percentage of male and percentage of female in that state with in 25 to 45 years of age.
     */
 
 
