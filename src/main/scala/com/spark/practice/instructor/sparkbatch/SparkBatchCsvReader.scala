@@ -60,4 +60,12 @@ object SparkBatchCsvReader {
       .mode("overwrite")  // to overwrite the output
       .csv("./resources/outputs/instructor/unique_area_list_csv")
   }
+
+  /**
+   * Assignment to do
+   * Q1 - Select any state and write below sql query
+   * Query - Find the ratio of percentage of male and percentage of female in that state with in 25 to 45 years of age.
+    */
+
+
 }
