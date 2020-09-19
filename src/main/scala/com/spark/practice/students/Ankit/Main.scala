@@ -31,11 +31,11 @@ object Main
     // run sql query on the view
     val resultDf = spark.sql(
       """
-        |SELECT distinct area,total_males,total_females,age
+        |SELECT area,total_males,total_females,age
         |,total_males/total_persons as males_ratio
         |,total_females/total_persons as females_ratio
         |FROM sampleData
-        |where age >=25 and age <=45
+        |where age >=25 and age <=45 and area = 'ASSAM'
         |""".stripMargin)
 
     // show top 20 grouped by results in console
