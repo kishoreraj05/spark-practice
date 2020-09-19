@@ -1,5 +1,6 @@
 package com.spark.practice.instructor.sparkbatch
 
+import com.spark.practice.instructor.sparkbatch.quesans.Solutions
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.{DataFrame, SparkSession}
 
@@ -28,29 +29,25 @@ object SparkBatchCsvReader {
     // create view in memory over data frame
     df.createOrReplaceTempView("sampleData")
     // run sql query on the view
-    val resultDf = spark.sql(
-      """
-        |SELECT distinct area
-        |FROM sampleData
-        |""".stripMargin)
+    val resultDf = Solutions.solutionsOfQues1(spark, "sampleData")
+    resultDf.createOrReplaceTempView("resultDF")
 
-    // show top 20 grouped by results in console
-    resultDf.show()
+    val resultdf1 = spark.sql("select * from resultDF where area = 'MEGHALAYA' ")
 
     // write operations will write output in multiple parts file.
     // no of files depends on the no of partitions in resultDF
     // resultDf.write.json("./resources/outputs/countryWiseRecordsCount")
 
     // how to write output into one files, use repartition function
-    writeOutputInJson(resultDf)
+    writeOutputInJson(resultdf1, "male_female_ratio_for_specific_area")
   }
 
-  def writeOutputInJson(df: DataFrame) : Unit = {
+  def writeOutputInJson(df: DataFrame, outputName: String) : Unit = {
     df
       .repartition(1)
       .write
       .mode("overwrite")  // to overwrite the output
-      .json("./resources/outputs/instructor/unique_area_list")
+      .json(s"./resources/outputs/instructor/$outputName")
   }
 
   def writeOutputInCsv(df: DataFrame) : Unit = {
