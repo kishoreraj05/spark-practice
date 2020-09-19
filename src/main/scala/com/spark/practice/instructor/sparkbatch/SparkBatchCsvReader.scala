@@ -1,6 +1,6 @@
 package com.spark.practice.instructor.sparkbatch
 
-import com.spark.practice.instructor.sparkbatch.quesans.Solutions
+import com.spark.practice.instructor.sparkbatch.quesans.AssigmentSolutions
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.{DataFrame, SparkSession}
 
@@ -17,6 +17,8 @@ object SparkBatchCsvReader {
       .config(sparkConf)
       .getOrCreate()
 
+    val solutions = new AssigmentSolutions(spark)
+
     // read local file
     val df = spark.read
       .option("header", true)
@@ -28,17 +30,14 @@ object SparkBatchCsvReader {
 
     // create view in memory over data frame
     df.createOrReplaceTempView("sampleData")
-    // run sql query on the view
-    val resultDf = Solutions.solutionsOfQues1(spark, "sampleData")
-    resultDf.createOrReplaceTempView("resultDF")
 
+    // run sql query on the view
+    val resultDf = solutions.solutionOfQuesOne("sampleData")
+
+    // filter MEGHALAYA result
+    resultDf.createOrReplaceTempView("resultDF")
     val resultdf1 = spark.sql("select * from resultDF where area = 'MEGHALAYA' ")
 
-    // write operations will write output in multiple parts file.
-    // no of files depends on the no of partitions in resultDF
-    // resultDf.write.json("./resources/outputs/countryWiseRecordsCount")
-
-    // how to write output into one files, use repartition function
     writeOutputInJson(resultdf1, "male_female_ratio_for_specific_area")
   }
 
@@ -50,12 +49,12 @@ object SparkBatchCsvReader {
       .json(s"./resources/outputs/instructor/$outputName")
   }
 
-  def writeOutputInCsv(df: DataFrame) : Unit = {
+  def writeOutputInCsv(df: DataFrame, outputName: String) : Unit = {
     df
       .repartition(1)
       .write
       .mode("overwrite")  // to overwrite the output
-      .csv("./resources/outputs/instructor/unique_area_list_csv")
+      .csv(s"./resources/outputs/instructor/$outputName")
   }
 
   /**
