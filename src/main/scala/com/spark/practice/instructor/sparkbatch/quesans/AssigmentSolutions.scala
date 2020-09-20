@@ -26,4 +26,14 @@ class AssigmentSolutions(spark: SparkSession) {
         |GROUP BY area )
         |""".stripMargin)
   }
+  def solutionOfQuesTwo(tableName: String): DataFrame = {
+
+    spark.sql(
+      s"""
+         |SELECT *
+         |FROM $tableName
+         |WHERE age >= 25 AND age <= 45
+         |""".stripMargin)
+  }
+
 }

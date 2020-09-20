@@ -24,7 +24,7 @@ object SparkBatchCsvReader {
       .option("header", true)
       .option("enforceSchema", false)
       .csv("./resources/datasets/india_population_by_area_age.csv")
-
+    writeOutputInJson(df, "india_population_in_json")
     // print 10 sample records in console
     df.show(10)
 
