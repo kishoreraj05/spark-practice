@@ -38,8 +38,17 @@ object Main
         |where age >=25 and age <=45 and area = 'ASSAM'
         |""".stripMargin)
 
+    val resultDf1 = spark.sql(
+      """
+        |SELECT area,sum(total_males) as males,sum(total_females) as females
+        |FROM sampleData
+        |where total_females >= total_males
+        |group by area
+        |""".stripMargin)
+
     // show top 20 grouped by results in console
     resultDf.show()
+    resultDf1.show()
 
     // write operations will write output in multiple parts file.
     // no of files depends on the no of partitions in resultDF
