@@ -9,8 +9,6 @@ class AssigmentSolutions(spark: SparkSession) {
    * Query - Find the ratio of percentage of male and percentage of female
    * in that state within 25 to 45 years of age.
    *
-   * @param df
-   * @return
    */
   def solutionOfQuesOne(tableName: String): DataFrame = {
 
